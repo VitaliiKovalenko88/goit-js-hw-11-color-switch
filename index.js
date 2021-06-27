@@ -10,26 +10,26 @@ const colors = [
 const refs = {
   start: document.querySelector("[data-action=start]"),
   stop: document.querySelector("[data-action=stop]"),
-  body: document.querySelector("body"),
 };
 
 refs.start.addEventListener("click", onStartClick);
-refs.stop.addEventListener("click", onStopClick);
 
-let id = 0;
 function onStartClick() {
-  id = setInterval(() => {
-    const index = randomIntegerFromInterval(0, 5);
+  const intervalId = setInterval(() => {
+    const index = randomIntegerFromInterval(0, colors.length - 1);
     const color = colors[index];
-    refs.body.style.backgroundColor = color;
-    console.log(index);
+    document.body.style.backgroundColor = color;
   }, 1000);
-  refs.start.setAttribute("disabled", "true");
-}
 
-function onStopClick() {
-  clearInterval(id);
-  refs.start.removeAttribute("disabled", "true");
+  refs.stop.addEventListener("click", () => {
+    refs.start.disabled = false;
+    refs.stop.disabled = true;
+
+    clearInterval(intervalId);
+  });
+
+  refs.start.disabled = true;
+  refs.stop.disabled = false;
 }
 
 const randomIntegerFromInterval = (min, max) => {
